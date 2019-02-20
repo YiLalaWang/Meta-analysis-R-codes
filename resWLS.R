@@ -1,6 +1,7 @@
 
 # This is the code for organizing WLS regression results
 ## The code also includes the calculation for 95%CI of tau2
+## input x should be the WLS results from the rma function based on metafor package
 
 resWLS.table=function(x){
   res.table=data.frame(matrix(nrow = x$p,ncol=2))
