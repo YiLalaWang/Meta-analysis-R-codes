@@ -6,11 +6,10 @@
 corrtest = function(x){
   require(psych)
   x=as.data.frame(x)
-  r=corr.test(x,use="pairwise",method="pearson")$r
-  r=round(r,2)
-  p=corr.test(x,use="pairwise",method="pearson")$p
-  p=round(p,2)
-  n=corr.test(x,use="pairwise",method="pearson")$n
+  corr=corr.test(x,use="pairwise",method="pearson")
+  r=round(corr$r,2)
+  p=round(corr$p,2)
+  n=corr$n
   corr.p=matrix(paste(r," (",n,", ",p,")"),ncol = ncol(x))
   diag(corr.p)=paste(diag(r)," ",sep="")
   rownames(corr.p)=colnames(x)
