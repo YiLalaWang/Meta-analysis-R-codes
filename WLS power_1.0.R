@@ -170,4 +170,4 @@ beta.pred=c(b1, b2, b3)
 
 rawdata=read.table(file.choose(),header=T,sep=",") 
 beta.pred=c(0.25, 0.25, 0) 
-WLSpower(rawdata, b=1, hetero.fit="large", tau2=0.036, beta.pred)
+WLSpower(x=rawdata, b=1, hetero.fit="large", tau2=0.036, beta.pred)
