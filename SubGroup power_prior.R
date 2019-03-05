@@ -121,13 +121,13 @@ SubGrouppower.prior=function(x,es.g,hetero){
   
   power.fe.omni=round(power.FE.omni,digits=2) 
   power.fe.fit=round(power.fit,digits=2)
-  power.contrast.1side.FE=if(is.null(power.contrast.1side.FE)){NULL}else{round(power.contrast.1side.FE,digits=2)}
-  power.contrast.2side.FE=if(is.null(power.contrast.2side.FE)){NULL}else{round(power.contrast.2side.FE,digits=2)}
+  power.contrast.1side.FE=round(power.contrast.1side.FE,digits=2)
+  power.contrast.2side.FE=round(power.contrast.2side.FE,digits=2)
 
   power.me.omni=round(power.ME.omni,digits=2)
   power.me.tau2=round(power.tau2,digits=2)
-  power.contrast.1side.ME=if(is.null(power.contrast.1side.ME)){NULL}else{round(power.contrast.1side.ME,digits=2)}
-  power.contrast.2side.ME=if(is.null(power.contrast.2side.ME)){NULL}else{round(power.contrast.2side.ME,digits=2)}
+  power.contrast.1side.ME=round(power.contrast.1side.ME,digits=2)
+  power.contrast.2side.ME=round(power.contrast.2side.ME,digits=2)
 
   ################## Organizing all results #############################
   SubGrouppower.table.prior=data.frame(matrix(nrow = 4,ncol = 2))
