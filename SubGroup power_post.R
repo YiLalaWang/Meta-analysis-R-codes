@@ -133,13 +133,13 @@ SubGrouppower.post=function(x,mod){
   
   power.fe.omni=round(power.FE.omni,digits=2) 
   power.fe.fit=round(power.fit,digits=2)
-  power.contrast.FE_Bonfer=if(is.null(power.contrast.FE_Bonfer)){NULL}else{round(power.contrast.FE_Bonfer,digits=2)}
-  power.contrast.FE_Scheffe=if(is.null(power.contrast.FE_Scheffe)){NULL}else{round(power.contrast.FE_Scheffe,digits=2)}
+  power.contrast.FE_Bonfer=round(power.contrast.FE_Bonfer,digits=2)
+  power.contrast.FE_Scheffe=round(power.contrast.FE_Scheffe,digits=2)
   
   power.me.omni=round(power.ME.omni,digits=2)
   power.me.tau2=round(power.tau2,digits=2)
-  power.contrast.ME_Bonfer=if(is.null(power.contrast.ME_Bonfer)){NULL}else{round(power.contrast.ME_Bonfer,digits=2)}
-  power.contrast.ME_Scheffe=if(is.null(power.contrast.ME_Scheffe)){NULL}else{round(power.contrast.ME_Scheffe,digits=2)}
+  power.contrast.ME_Bonfer=round(power.contrast.ME_Bonfer,digits=2)
+  power.contrast.ME_Scheffe=round(power.contrast.ME_Scheffe,digits=2)
   
   ################## Organizing all results #############################
   SubGrouppower.table.post=data.frame(matrix(nrow = 4,ncol = 2))
