@@ -170,4 +170,4 @@ rawdata=read.table(file="Table 1.csv",header=TRUE,sep=",")
 rawdata$yi=(1-3/(4*(rawdata$n-2)-1))*rawdata$es 
 rawdata$vi=2/(rawdata$n/2)+rawdata$yi^2/(2*rawdata$n)
 # yi & vi converted using standard conversion for standardized mean difference
-SubGrouppower.post(rawdata,mod="mod")
+SubGrouppower.post(rawdata,mod="SES")
