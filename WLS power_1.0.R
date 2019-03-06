@@ -166,8 +166,8 @@ WLSpower = function(x, b, hetero.fit, tau2, beta.pred){
 ### if post hoc power, fill in the parentheses using the actual beta estimates from meta-regression
 beta.pred=c(b1, b2, b3) 
 
-# For an example, see below: 
+# For an example using Table 2 data in Hedges & Pigott (2004), see below: 
 
-rawdata=read.table(file.choose(),header=T,sep=",") 
+rawdata=read.table(file="Table 2.csv",header=TRUE,sep=",")
 beta.pred=c(0.25, 0.25, 0) 
 WLSpower(x=rawdata, b=1, hetero.fit="large", tau2=0.036, beta.pred)
