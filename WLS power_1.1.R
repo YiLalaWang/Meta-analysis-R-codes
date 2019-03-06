@@ -147,10 +147,9 @@ WLSpower = function(x, b, tau2, beta.pred){
 
 # use x to specify the name for the raw data file
 ### Raw data must be in .csv format, and contains the following columns: 
-### column 1, entitled as vi: variance of effect sizes,  
-### column 2, entitled as b0: intercept of meta-regression model, filled with 1 for all rows 
-### column 3, entitled as b1: moderator values corresponding with n (or v)
-### column 4 and on: similar with column 3, entitled as b2, b3 and so on
+### vi: variance of effect sizes
+### es: effect sizes 
+### one column for the values of each moderator (e.g., 3 additional columns if testing 3 moderators)
 
 # use b to specify which beta you want to analyze for power (1 if testing for beta1, etc.)
 
