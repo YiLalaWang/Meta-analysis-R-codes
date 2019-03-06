@@ -161,10 +161,10 @@ WLSpower = function(x, b, tau2, beta.pred){
 ### if post hoc power, fill in the parentheses using the actual beta estimates from meta-regression
 beta.pred=c(b1, b2, b3) 
 
-# For an example using Table 2 data in Hedges & Pigott (2004), see below: 
+# For an example (post-hoc analysis) using Table 2 data in Hedges & Pigott (2004), see below: 
 
 rawdata=read.table(file="Table 2.csv",header=TRUE,sep=",")
-res=rma(yi=es,vi,data=rawdata,level=95,mods=~b1+b2+b3)
+res=metafor::rma(yi=es,vi,data=rawdata,level=95,mods=~b1+b2+b3) # rma function requires the metafor package
 # b1,b2,b3 are columns 2-4 in the "X matrix" in Table 2 (assuming that column 1 represents b0)
 beta.pred=res$b[c("b1","b2","b3"),1] 
 WLSpower(x=rawdata, b=1, tau2=res$tau2, beta.pred)
