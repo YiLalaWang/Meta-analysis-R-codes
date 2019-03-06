@@ -5,7 +5,6 @@
 ## when raw data (i.e., sample sizes) are available
 ## Please contact Yi Wang (wangyilalala@gmail.com) for questions
 ###########################################################################
-setwd("G:/SkyDrive/methods&stats/Meta-analysis/Calculation/My own files/R code power for meta moderation")
 
 WLSpower = function(x, b, tau2, beta.pred){
   rawdata = as.data.frame(x)
