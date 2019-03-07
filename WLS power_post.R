@@ -28,7 +28,7 @@ WLSpower.post = function(x, moderators, test.beta){
   beta.pred=as.matrix(res.mod$b[moderators,1])
   p = nrow(beta.pred)
   moderators=as.matrix(moderators)
-  b = grep(tested.beta,moderators)
+  b = grep(test.beta,moderators)
   
   tau2=res.mod$tau2
   tau2=rep(tau2,k)
