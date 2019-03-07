@@ -7,6 +7,8 @@
 
 SubGrouppower.post=function(x,group){
   rawdata = as.data.frame(x)
+  require(dplyr)
+  rawdata=rawdata%>%na.omit(rawdata[group])
   require(metafor)
   rawdata$w=1/rawdata$vi
   k=nrow(rawdata) 
@@ -105,7 +107,7 @@ SubGrouppower.post=function(x,group){
   
   ############# Power of within-group heterogeneity (QE) #############
   c.fit=qchisq(1-alpha,k-p,ncp=0,lower.tail=T, log.p=F)
-  lumda.fit=sum((rawdata$es-rawdata$rg)^2*rawdata$w)
+  lumda.fit=sum((rawdata$es-rawdata$rg)^2*rawdata$w,na.rm=TRUE)
   phi.fit=pchisq(c.fit,k-p,ncp=lumda.fit,lower.tail=T,log.p=F)
   power.fit=1-phi.fit
   
