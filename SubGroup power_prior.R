@@ -132,9 +132,9 @@ SubGrouppower.prior=function(x,es.g,hetero){
   ################## Organizing all results #############################
   SubGrouppower.table.prior=data.frame(matrix(nrow = 4,ncol = 2))
   colnames(SubGrouppower.table.prior)=c("fixed effects","mixed effects")
-  rownames(SubGrouppower.table.prior)=c("omnibus test (QM)", "Model fit (QE)",
-                                        "group contrast (one-tail test)",
-                                        "group contrast (two-tail test)")
+  rownames(SubGrouppower.table.prior)=c("omnibus test (QM) power", "Model fit (QE) power",
+                                        "group contrast power (one-tail test)",
+                                        "group contrast power (two-tail test)")
   SubGrouppower.table.prior["fixed effects"]=c(power.fe.omni, power.fe.fit,
                                                power.contrast.1side.FE, power.contrast.2side.FE)
   SubGrouppower.table.prior["mixed effects"]=c(power.me.omni, power.me.tau2,
