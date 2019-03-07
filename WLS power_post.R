@@ -6,7 +6,7 @@
 ## Please contact Yi Wang (wangyilalala@gmail.com) for questions
 ###########################################################################
 
-WLSpower.post = function(x, moderators, tested.beta){
+WLSpower.post = function(x, moderators, test.beta){
   rawdata = as.data.frame(x)
   require(dplyr)
   rawdata=rawdata%>%na.omit(rawdata[moderators])
@@ -169,11 +169,11 @@ WLSpower.post = function(x, moderators, tested.beta){
 
 # use moderators to specify the names of moderators
 
-# use tested.beta to specify which beta you want to test for power 
+# use test.beta to specify which beta you want to test for power 
 
 # For an example (post-hoc analysis) using Table 2 data in Hedges & Pigott (2004), see below: 
 
 rawdata=read.table(file="Table 2.csv",header=TRUE,sep=",")
 rawdata=escalc(measure="SMD",yi=es,vi=vi,data=rawdata)
-WLSpower.post(x=rawdata,moderators=c("b1","b2","b3"), tested.beta = "b1")
+WLSpower.post(x=rawdata,moderators=c("b1","b2","b3"), test.beta = "b1")
 # b1,b2,b3 are columns 2-4 in the "X matrix" in Table 2 
