@@ -3,7 +3,7 @@
 ## The code also includes the calculation for 95%CI of tau2
 ## input x should be the dataset, "moderators" should specify the moderator(s) to be tested
 ## As an example with rawdata as dataset and a & b as moderators: 
-res.WLS(rawdata,c("a","b")
+res.WLS(rawdata,c("a","b"))
 
 res.WLS=function(x,moderators){
   rawdata=as.data.frame(x)
