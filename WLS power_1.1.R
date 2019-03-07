@@ -8,11 +8,14 @@
 
 WLSpower = function(x, moderators, b){
   rawdata = as.data.frame(x)
+  require(dplyr)
+  rawdata=rawdata%>%na.omit(rawdata[moderators])
   alpha = 0.05 # Desired alpha is set as 0.5 by default
   desire.power = 0.80 # Desired power is set as 0.80 by default
   v=rawdata$vi 
   k=nrow(rawdata) 
   w=1/v
+  rawdata$b0=1
   X=data.matrix(rawdata[c("b0",moderators)],rownames.force=NA)
   theta=data.matrix(rawdata$es)
   Var=diag(v)
@@ -151,7 +154,6 @@ WLSpower = function(x, moderators, b){
 ### Raw data must be in .csv format, and contains the following columns: 
 ### vi: variance of effect sizes
 ### es: effect sizes 
-### b0: intercept of meta-regression model, filled with 1 for all rows 
 ### one column for the values of each moderator (e.g., 3 additional columns if testing 3 moderators)
 ### moderator values should put in the last column(s) of the dataset
 
