@@ -5,43 +5,44 @@
 ## Please contact Yi Wang (wangyilalala@gmail.com) for questions
 ###########################################################################
 
-SubGrouppower.post=function(x,mod){
+SubGrouppower.post=function(x,group){
   rawdata = as.data.frame(x)
   require(metafor)
   rawdata$w=1/rawdata$vi
   k=nrow(rawdata) 
-  res.mod=rma(yi,vi,data=rawdata,level=95,mods=~mod-1)
+  colnames(rawdata)[colnames(rawdata)==group]="group"
+  res.mod=rma(es,vi,data=rawdata,level=95,mods=~group-1)
   r.g=res.mod$b
   p=nrow(r.g)
   df_p=p-1
   alpha=0.05
   
-  names=gsub(mod,"",row.names(r.g))
+  names=gsub("group","",row.names(r.g))
   rownames(r.g)=names
   res.lumda=data.frame(matrix(nrow = p,ncol=6))
   colnames(res.lumda)=c("vi","rg","rg_rm.diff","QE","m","vi_me")
   row.names(res.lumda)=names
   for (g in names){
     name=g
-    res.lumda[name,"vi"]=1/sum(subset(rawdata,mod==g)["w"])
+    res.lumda[name,"vi"]=1/sum(subset(rawdata,group==g)["w"])
     res.lumda[name,"rg"]=r.g[g,1]
   }
   est.rm=sum(res.lumda$rg/res.lumda$vi)/sum(1/res.lumda$vi)
   for (g in names){
     name=g
     res.lumda[name,"rg_rm.diff"]=res.lumda[g,"rg"]-est.rm
-    res.lumda[name,"QE"]=rma(yi,vi,data=subset(rawdata,mod==g))$QE
+    res.lumda[name,"QE"]=rma(yi,vi,data=subset(rawdata,group==g))$QE
   }
   QE_all=sum(res.lumda$QE)
   for (g in names){
     name=g
-    res.lumda[name,"a"]=sum(subset(rawdata,mod==g)$w)-sum((subset(rawdata,mod==g)$w)^2)/sum(subset(rawdata,mod==g)$w)
-    res.lumda[name,"m"]=nrow(subset(rawdata,mod==g))
+    res.lumda[name,"a"]=sum(subset(rawdata,group==g)$w)-sum((subset(rawdata,group==g)$w)^2)/sum(subset(rawdata,group==g)$w)
+    res.lumda[name,"m"]=nrow(subset(rawdata,group==g))
   }
   for (g in names){
     name=g
-    rawdata[ which(rawdata$mod==g),"m"]=res.lumda[g,"m"]
-    rawdata[ which(rawdata$mod==g),"rg"]=res.lumda[g,"rg"]
+    rawdata[ which(rawdata$group==g),"m"]=res.lumda[g,"m"]
+    rawdata[ which(rawdata$group==g),"rg"]=res.lumda[g,"rg"]
   }
   
   a_all=sum(res.lumda$a)
@@ -53,7 +54,7 @@ SubGrouppower.post=function(x,mod){
   rawdata$w_me=1/rawdata$vi_me
   for (g in names) {
     name=g
-    res.lumda[name,"vi_me"]=1/sum(subset(rawdata,mod==g)["w_me"])
+    res.lumda[name,"vi_me"]=1/sum(subset(rawdata,group==g)["w_me"])
   }
   
   ############# Power of omnibus test #############
@@ -112,9 +113,9 @@ SubGrouppower.post=function(x,mod){
   Miu.Q=a_all*tau2+k-p
   for (g in names) {
     name=g
-    res.lumda[name,"S"]=sum(subset(rawdata,mod==g)$w)
-    res.lumda[name,"S2"]=sum((subset(rawdata,mod==g)$w)^2)
-    res.lumda[name,"S3"]=sum((subset(rawdata,mod==g)$w)^3)
+    res.lumda[name,"S"]=sum(subset(rawdata,group==g)$w)
+    res.lumda[name,"S2"]=sum((subset(rawdata,group==g)$w)^2)
+    res.lumda[name,"S3"]=sum((subset(rawdata,group==g)$w)^3)
     res.lumda[name,"b"]=sum(res.lumda[g,"m"]-1+2*(res.lumda[g,"S"]-res.lumda[g,"S2"]/res.lumda[g,"S"])*tau2+
                               (res.lumda[g,"S2"]-2*res.lumda[g,"S3"]/res.lumda[g,"S"]+
                                  res.lumda[g,"S2"]^2/(res.lumda[g,"S"]^2))*(tau2^2))
@@ -162,12 +163,11 @@ SubGrouppower.post=function(x,mod){
 ### es: effect sizes 
 ### groups for comparison
 
-# use "mod" to specify the grouping variable (including the quotes in your code, e.g., mod="group")
+# use "group" to specify the grouping variable (including the quotes in your code, e.g., group="group")
 
 # For an example using Table 1 data in Hedges & Pigott (2004), see below: 
-
 rawdata=read.table(file="Table 1.csv",header=TRUE,sep=",") 
 rawdata$yi=(1-3/(4*(rawdata$n-2)-1))*rawdata$es 
 rawdata$vi=2/(rawdata$n/2)+rawdata$yi^2/(2*rawdata$n)
 # yi & vi converted using standard conversion for standardized mean difference
-SubGrouppower.post(rawdata,mod="SES")
+SubGrouppower.post(rawdata,group="SES")
