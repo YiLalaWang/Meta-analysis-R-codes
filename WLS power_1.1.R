@@ -6,22 +6,25 @@
 ## Please contact Yi Wang (wangyilalala@gmail.com) for questions
 ###########################################################################
 
-WLSpower = function(x, b, tau2, beta.pred){
+WLSpower = function(x, moderators, b){
   rawdata = as.data.frame(x)
   alpha = 0.05 # Desired alpha is set as 0.5 by default
   desire.power = 0.80 # Desired power is set as 0.80 by default
   v=rawdata$vi 
   k=nrow(rawdata) 
   w=1/v
-  beta.pred=as.matrix(beta.pred)
-  p = nrow(beta.pred)
-  q = ncol(rawdata)
-  X=data.matrix(rawdata[1:k, (q-p):q],rownames.force=NA)
-  theta=data.matrix(rawdata$es)
+  X=data.matrix(rawdata[c("b0",moderators)],rownames.force=NA)
+  theta=data.matrix(rawdata$yi)
   Var=diag(v)
   Var.2=solve(Var) %*% solve(Var)
   a=sum(w)-sum(diag(solve(t(X) %*% solve(Var) %*% X) %*% t(X) %*% Var.2 %*% X))
   
+  require(metafor)
+  res.mod=rma(yi,vi,data=rawdata,level=95,mods=as.formula(paste("~",paste(moderators,collapse="+"))))
+  beta.pred=as.matrix(res.mod$b[moderators,1])
+  p = nrow(beta.pred)
+  
+  tau2=res.mod$tau2
   tau2=rep(tau2,k)
   V=diag(v+tau2) 
   V2=V %*% V
@@ -148,23 +151,17 @@ WLSpower = function(x, b, tau2, beta.pred){
 ### Raw data must be in .csv format, and contains the following columns: 
 ### vi: variance of effect sizes
 ### es: effect sizes 
+### b0: intercept of meta-regression model, filled with 1 for all rows 
 ### one column for the values of each moderator (e.g., 3 additional columns if testing 3 moderators)
+### moderator values should put in the last column(s) of the dataset
+
+# use moderators to specify the names of moderators
 
 # use b to specify which beta you want to analyze for power (1 if testing for beta1, etc.)
-
-# use tau2 to specify the amount of unaccounted heterogeneity in mixed effect
-### tau2 is R metafor default output
-### Some software may term tau2 as "random effect variance component v"
-
-# beta.pred needs to be specified before using the WLSpower function for power calculation
-### If a priori power, fill in the parentheses using the expected beta estimates from meta-regression
-### if post hoc power, fill in the parentheses using the actual beta estimates from meta-regression
-beta.pred=c(b1, b2, b3) 
 
 # For an example (post-hoc analysis) using Table 2 data in Hedges & Pigott (2004), see below: 
 
 rawdata=read.table(file="Table 2.csv",header=TRUE,sep=",")
-res=metafor::rma(yi=es,vi,data=rawdata,level=95,mods=~b1+b2+b3) # rma function requires the metafor package
-# b1,b2,b3 are columns 2-4 in the "X matrix" in Table 2 (assuming that column 1 represents b0)
-beta.pred=res$b[c("b1","b2","b3"),1] 
-WLSpower(x=rawdata, b=1, tau2=res$tau2, beta.pred)
+rawdata=escalc(measure="SMD",yi=es,vi=vi,data=rawdata)
+WLSpower(x=rawdata,moderators=c("b1","b2","b3"), b=1)
+# b1,b2,b3 are columns 2-4 in the "X matrix" in Table 2 
