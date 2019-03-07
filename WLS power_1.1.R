@@ -134,7 +134,7 @@ WLSpower = function(x, moderators, b){
   ################## Organizing all results #############################
   WLSpower.table=data.frame(matrix(nrow = 6,ncol = 2))
   colnames(WLSpower.table)=c("fixed effects","mixed effects")
-  rownames(WLSpower.table)=c("omnibus test (QM)", "Model fit (QE)",
+  rownames(WLSpower.table)=c("omnibus test (QM) power", "Model fit (QE) power",
                              "actual power for beta (one-tail test)",
                              "beta needed for desired power (one-tail test)",
                              "actual power for beta (two-tail test)",
