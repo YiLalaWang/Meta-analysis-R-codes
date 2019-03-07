@@ -14,13 +14,13 @@ WLSpower = function(x, moderators, b){
   k=nrow(rawdata) 
   w=1/v
   X=data.matrix(rawdata[c("b0",moderators)],rownames.force=NA)
-  theta=data.matrix(rawdata$yi)
+  theta=data.matrix(rawdata$es)
   Var=diag(v)
   Var.2=solve(Var) %*% solve(Var)
   a=sum(w)-sum(diag(solve(t(X) %*% solve(Var) %*% X) %*% t(X) %*% Var.2 %*% X))
   
   require(metafor)
-  res.mod=rma(yi,vi,data=rawdata,level=95,mods=as.formula(paste("~",paste(moderators,collapse="+"))))
+  res.mod=rma(es,vi,data=rawdata,level=95,mods=as.formula(paste("~",paste(moderators,collapse="+"))))
   beta.pred=as.matrix(res.mod$b[moderators,1])
   p = nrow(beta.pred)
   
