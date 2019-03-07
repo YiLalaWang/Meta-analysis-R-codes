@@ -151,7 +151,7 @@ WLSpower = function(x, moderators, b){
 #################### Instructions for specifying values in the WLSpower function ##########################
 
 # use x to specify the name for the raw data file
-### Raw data must be in .csv format, and contains the following columns: 
+### Raw data must contains the following columns: 
 ### vi: variance of effect sizes
 ### es: effect sizes 
 ### one column for the values of each moderator (e.g., 3 additional columns if testing 3 moderators)
