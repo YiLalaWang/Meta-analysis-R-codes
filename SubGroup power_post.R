@@ -147,9 +147,9 @@ SubGrouppower.post=function(x,group){
   ################## Organizing all results #############################
   SubGrouppower.table.post=data.frame(matrix(nrow = 4,ncol = 2))
   colnames(SubGrouppower.table.post)=c("fixed effects","mixed effects")
-  rownames(SubGrouppower.table.post)=c("omnibus test (QM)", "Model fit (QE)",
-                                       "group contrast (Bonferroni two tail)",
-                                       "group contrast (Scheffe two tail)")
+  rownames(SubGrouppower.table.post)=c("omnibus test (QM) power", "Model fit (QE) power",
+                                       "group contrast power (Bonferroni two tail)",
+                                       "group contrast power (Scheffe two tail)")
   SubGrouppower.table.post["fixed effects"]=c(power.fe.omni, power.fe.fit,
                                               power.contrast.FE_Bonfer, power.contrast.FE_Scheffe)
   SubGrouppower.table.post["mixed effects"]=c(power.me.omni, power.me.tau2,
