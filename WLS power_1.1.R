@@ -1,7 +1,7 @@
 ##########################################################################
 ## Fixed- & Mixed-model meta-WLS procedures (Multiple Regression analogues) 
 ## based on Hedges & Pigott (2004) 
-## This is for a priori and post hoc power estimation 
+## This is for post hoc power estimation 
 ## when raw data (i.e., sample sizes) are available
 ## Please contact Yi Wang (wangyilalala@gmail.com) for questions
 ###########################################################################
