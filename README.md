@@ -4,7 +4,7 @@ This repository contains codes that can be easily adopted on different meta-anal
 * CorrMatrix: R function that organizes Pearson correlation results (based on the corr.test function in Psych package) into an APA-format matrix.
 * MetaCalculation: R function that enables (1) doing sample-size weighted meta-analysis based on the metafor package, (2) calculating the 95%CI for tau2, and (3) organizing all meta-analytic results into table format.
 * psychmeta: R function that enables (1) doing psychometric meta-analysis weighted by sample size and corrected for measurement errors in both x and y; and (3) organizing all meta-analytic results into table format. 
-* PubBias: R function that calculates and organizes test results for publication biases based on: (1) Egger's test; (2) PET-PEESE method; (3) Cumulative meta-analysis based on precision; (4) contour-enhanced funnel plot; and (5) fix-random trim and fill. 
+* PubBias: R function that calculates and organizes test results for publication biases based on: (1) Egger's test; (2) PET-PEESE method; (3) Cumulative meta-analysis based on precision; (4) fixed-random trim and fill acompanied with contour-enhanced funnel plot. 
 * resGroup: R function that calculates and organizes sub-group moderator analyses results (based on metafor package) into table format. 
 * resWLS: R function that calculates and organizes WLS meta-regression results (based on metafor package) into table format (making it easier to export into csv or excel files).
 * SubGroup power_post: R function for calculating post hoc power for fixed- and mixed-effects sub-group analyses for moderator in meta-analysis.
