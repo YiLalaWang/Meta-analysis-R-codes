@@ -24,8 +24,10 @@
 PubBias=function(rawdata){
   require(metafor)
   rawdata=data.frame(rawdata)
-  ###### original meta-analysis using RMEL estimator for heterogeneity #######
   rawdata.rescale=escalc(measure="ZCOR",ri=r,ni=N,data=rawdata)
+  rawdata.rescale$sei=sqrt(rawdata.rescale$vi)
+  
+  ###### original meta-analysis using RMEL estimator for heterogeneity #######
   x=rma(measure="ZCOR",yi,vi,data=rawdata.rescale,level=95,slab=rawdata.rescale$SampleID)
   ci=predict(x,level=95,transf=transf.ztor) # 95% CI
   rm=round(ci$pred,2)
@@ -50,10 +52,10 @@ PubBias=function(rawdata){
   PET.gamma.LL=round(PET.gamma-PET.gamma.se*1.96,2) ## 95%CI to test if gamma1=0
   PET.gamma.UL=round(PET.gamma+PET.gamma.se*1.96,2)
   PET.gamma.p=coef(egger.x$fit)["Xintrcpt","Pr(>|t|)"]
-
+  
   reg.PEESE = regtest(x,model="lm",predictor="vi") # formula 8
   PEESE.beta = round(coef(reg.PEESE$fit)["Xintrcpt","Estimate"],2) # beta1 (formula 8)
-
+  
   ###### (fixed-random) trim & fill + contour-enhanced funnel plot######
   x.fe=rma(measure="ZCOR",yi,vi,data=rawdata.rescale,level=95,method="FE")
   tnf.fe.x=trimfill(x.fe,estimator="L0")
@@ -70,7 +72,7 @@ PubBias=function(rawdata){
   diff.fe.fill = round(rm.fe.fill-rm,2) 
   perc.diff.fe.fill = round((abs(diff.fe.fill)/abs(rm))*100,2)
   
-  dat.fil=as.data.frame(cbind(res.tnf.fe$yi.f,res.tnf.fe$vi.f,res.tnf.fe$fill))
+  dat.fil=as.data.frame(cbind(res.tnf.fe.x$yi.f,res.tnf.fe.x$vi.f,res.tnf.fe.x$fill))
   colnames(dat.fil)=c("yi","vi","fill")
   dat.fil.t=subset(dat.fil,fill==1)
   dat.fil.t$vi.95=1.96*sqrt(dat.fil.t$vi)
@@ -79,22 +81,22 @@ PubBias=function(rawdata){
   ### if abs(yi) < 1.96*sqrt(vi) then it's within the non-significant area
   k.fil.fe.ng=sum(dat.fil.t$non.sig)
   
-## for visual inspection only 
-# funnel(res.tnf.fe.x,level=c(95, 99), shade=c("white", "gray55"), refline=0,
-#         atransf=transf.ztor,yaxis="vinv",  # vinv is used so y-axis looks more like actual N
-#         legend=TRUE,back="grey75",hlines="grey75",
-#         digits=c(2,0),font=6, font.lab=6) #(font=6 turns fonts into Times New Roman)
+  ## for visual inspection only 
+  # funnel(res.tnf.fe.x,level=c(95, 99), shade=c("white", "gray55"), refline=0,
+  #         atransf=transf.ztor, yaxis="vinv",  # vinv is used so y-axis looks more like actual N
+  #         legend=TRUE,back="grey75",hlines="grey75",
+  #         digits=c(2,0),font=6, font.lab=6) #(font=6 turns fonts into Times New Roman)
   
   ########## cumulative meta-analysis by precision ################
   #Sort by sei
-  dat <- dat[order(dat$sei),] 
+  rawdata.rescale = rawdata.rescale[order(rawdata.rescale$sei),] 
   #Calculate cumulative N values
-  dat$cumsumN <- round(cumsum(dat$N), digits = 2)
-  dat$cumsumN <- paste0(dat$N," (", dat$cumsumN,")")
+  rawdata.rescale$cumsumN = round(cumsum(rawdata.rescale$N), digits = 2)
+  rawdata.rescale$cumsumN = paste0(rawdata.rescale$N," (", rawdata.rescale$cumsumN,")")
   
-  res.cma <- cumul(res, order=order(dat$sei))
+  res.cma = cumul(x, order=order(rawdata.rescale$sei))
   #forest(res.cma, transf=transf.ztor) # for visual inspection only
-  dat.cum=as.data.frame(cbind(res.cma$estimate,sort(dat$N,decreasing=TRUE)))
+  dat.cum=as.data.frame(cbind(res.cma$estimate,sort(rawdata.rescale$N,decreasing=TRUE)))
   colnames(dat.cum)=c("res.cul","N")
   trend=lm(formula=res.cul~N,data=dat.cum) # a positive drift = the larger N, the larger r
   dir.drift=if((as.list(trend$coefficients)$N<0)){"Neg"} else {"Pos"}
