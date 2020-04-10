@@ -80,7 +80,7 @@ PubBias=function(rawdata){
   k.fil.fe.ng=sum(dat.fil.t$non.sig)
   
 ## for visual inspection only 
-# funnel(res.tnf.fe,level=c(95, 99), shade=c("white", "gray55"), refline=0,
+# funnel(res.tnf.fe.x,level=c(95, 99), shade=c("white", "gray55"), refline=0,
 #         atransf=transf.ztor,yaxis="vinv",  # vinv is used so y-axis looks more like actual N
 #         legend=TRUE,back="grey75",hlines="grey75",
 #         digits=c(2,0),font=6, font.lab=6) #(font=6 turns fonts into Times New Roman)
