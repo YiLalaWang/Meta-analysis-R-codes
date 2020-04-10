@@ -1,3 +1,26 @@
+# This is the function that conducts publication bias tests based on:
+## (1) Egger's test:
+### column "Egger's test" produces the estimate and 95% CI of the test;
+
+## (2) PET-PEESE method: 
+### column "PET" produces the PET estimate and its 95% CI, 
+### column "PEESE" produces the PEESE estimate to compare with rm; 
+
+## (3) cumulative meta-analysis based on precision: 
+### column "cum.dir" produces the direction of the potential drift of the forest plot, 
+#### "Neg" = negative drift as precision decrease, "Pos" = positive drift,
+### column "cum.drift(percent) produces the magnitude and % of the drift from rm;
+
+## (4) fixed-random trim and fill acompanied with contour-enhanced funnel plot: 
+### column "FE k fill (side)" produces the number of filled studies and at which side they are filled in the funnel plot
+### column "FE k fill non-sig" produces the number of filled studies that are in the non-significant area of the contour-enhanced funnel plot
+### column "FE rm fill (95%CI)" produces the rm and the 95% CI after studies are filled in
+### column "FE diff.fill (diff.perc)" produces the difference between the original and filled rm and the % of difference from rm.
+
+# rawdata should at least include r(effect sizes) and N(sample sizes) for all studies
+# note that N is in capital letter
+## sample/study info (e.g., citation) is strongly recommended
+
 PubBias=function(rawdata){
   require(metafor)
   rawdata=data.frame(rawdata)
