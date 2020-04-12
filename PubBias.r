@@ -9,7 +9,9 @@
 ## (3) cumulative meta-analysis based on precision: 
 ### column "cum.dir" produces the direction of the potential drift of the forest plot, 
 #### "Neg" = negative drift as precision decrease, "Pos" = positive drift,
-### column "cum.drift(percent) produces the magnitude and % of the drift from rm;
+### column "cum.drift(percent) produces the magnitude and % of the drift of rm between the 
+#### top 20% most precise (top 20% largest N) studies and the top 20% least precise 
+#### (top 20% smallest N) studies;
 
 ## (4) fixed-random trim and fill acompanied with contour-enhanced funnel plot: 
 ### column "FE k fill (side)" produces the number of filled studies and at which side they are filled in the funnel plot
@@ -100,14 +102,25 @@ PubBias=function(rawdata){
   colnames(dat.cum)=c("res.cul","N")
   trend=lm(formula=res.cul~N,data=dat.cum) # a positive drift = the larger N, the larger r
   dir.drift=if((as.list(trend$coefficients)$N<0)){"Neg"} else {"Pos"}
-  diff.drift = dat.cum[1,"res.cul"]-dat.cum[nrow(dat.cum),"res.cul"] 
-  perc.diff.drift = round((abs(diff.drift)/abs(dat.cum[nrow(dat.cum),"res.cul"]))*100,2)
-  diff.drift = round(diff.drift,2)
   
+  ### compute & compare the mean r with the 20% most/least precise studies 
+  select = round(nrow(rawdata.rescale)*.20,0)
+  dat.first=rawdata.rescale[seq(from = 1, to = select),]
+  dat.bottom=rawdata.rescale[seq(from=nrow(rawdata.rescale)-select+1,to=nrow(rawdata.rescale)),]
+  x.first=rma(measure="ZCOR",yi,vi,data=dat.first,level=95)
+  ci.first=predict(x.first,level=95,transf=transf.ztor) 
+  rm.first=ci.first$pred
+  
+  x.bottom=rma(measure="ZCOR",yi,vi,data=dat.bottom,level=95)
+  ci.bottom=predict(x.bottom,level=95,transf=transf.ztor) 
+  rm.bottom=ci.bottom$pred
+  
+  diff.drift = round(rm.first - rm.bottom,2) 
+  perc.diff.drift = round((abs(diff.drift)/abs(rm.bottom))*100,2)
   
   ####### organizing results into table format #######
   res.table=data.frame(matrix(nrow=11, ncol=1))
-  colnames(res.table)="pub bias"
+  colnames(res.table)="results"
   rownames(res.table)=c("K","rm (95%CI)","Egger's test", "PET", "PEESE",
                         "cum.dir", "cum.drift(percent)",  
                         "FE k fill (side)","FE k fill non-sig",
